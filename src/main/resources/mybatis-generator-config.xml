@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <classPathEntry location="D:\program\maven\repository\org\mariadb\jdbc\mariadb-java-client\3.0.10\mariadb-java-client-3.0.10.jar" />
+    
+    <context id="aks" targetRuntime="MyBatis3" defaultModelType="flat">
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+        <commentGenerator>
+            <property name="suppressDate" value="true"/>
+            <property name="suppressAllComments" value="false"/>
+        </commentGenerator>
+        
+        <jdbcConnection driverClass="org.mariadb.jdbc.Driver"
+                        connectionURL="jdbc:mariadb://localhost:3306/nj_aks?characterEncoding=utf-8&amp;serverTimezone=UTC"
+                        userId="root"
+                        password="jiyufei1991!">
+        </jdbcConnection>
+        <javaTypeResolver>
+            <property name="useJSR310Types" value="true"/>
+        </javaTypeResolver>
+        <javaModelGenerator targetPackage="com.aks.management.bean" targetProject="D:\workspace\aks\aks-management\src\main\java">
+            <property name="enableSubPackages" value="false" />
+            <property name="trimStrings" value="false" />
+        </javaModelGenerator>
+        <sqlMapGenerator targetPackage="mapper"  targetProject="D:\workspace\aks\aks-management\src\main\resources">
+            <property name="enableSubPackages" value="false" />
+        </sqlMapGenerator>
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.aks.management.dao"  targetProject="D:\workspace\aks\aks-management\src\main\java">
+            <property name="enableSubPackages" value="false" />
+        </javaClientGenerator>
+    
+        
+        
+        <!--<generatedKey column="id" sqlStatement="JDBC" identity="true"/>-->
+    
+        <table tableName="cargo">
+        </table>
+        <table tableName="cargo_change_record">
+        </table>
+        <table tableName="customer">
+        </table>
+        <table tableName="customer_contacts">
+        </table>
+        <table tableName="operator_log">
+        </table>
+        <table tableName="invoice_base">
+        </table>
+        <table tableName="pay_stage">
+        </table>
+        <table tableName="permission">
+        </table>
+        <table tableName="purchase">
+        </table>
+        <table tableName="purchase_cargo">
+        </table>
+        <table tableName="purchase_sale">
+        </table>
+        <table tableName="purchase_sale_cargo">
+        </table>
+        <table tableName="role">
+        </table>
+        <table tableName="role_permission">
+        </table>
+        <table tableName="sale">
+        </table>
+        <table tableName="sale_cargo">
+        </table>
+        <table tableName="supplier">
+        </table>
+        <table tableName="supplier_contacts">
+        </table>
+        <table tableName="system_log">
+        </table>
+        <table tableName="user">
+        </table>
+        <table tableName="user_role">
+        </table>
+    </context>
+
+
+</generatorConfiguration>
