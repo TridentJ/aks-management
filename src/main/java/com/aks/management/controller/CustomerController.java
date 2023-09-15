@@ -13,7 +13,6 @@ import com.aks.management.utils.AjaxResponseList;
 import com.aks.management.utils.customer.CustomerSampleInfo;
 import com.aks.management.utils.customer.CustomerSearch;
 import com.aks.management.utils.customer.CustomerSearchResult;
-import com.aks.management.utils.customer.CustomerShow;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.yitter.idgen.YitIdHelper;
@@ -122,7 +121,7 @@ public class CustomerController {
             return ajaxResponse;
         }
         //CustomerShow customerShow = (CustomerShow) customer;
-        CustomerShow customerShow = null;
+        //CustomerShow customerShow = null;
         /*ObjectMapper objectMapper = new ObjectMapper();
         try {
             customerShow = objectMapper.readValue(objectMapper.writeValueAsString(customer), CustomerShow.class);
@@ -162,14 +161,14 @@ public class CustomerController {
             }
     )
     @PostMapping(value = "/add")
-    public AjaxResponse addCustomer(@RequestBody CustomerShow customerShow){
+    public AjaxResponse addCustomer(@RequestBody Customer customer){
         AjaxResponse ajaxResponse = new AjaxResponse();
-        if(customerShow == null){
+        if(customer == null){
             ajaxResponse.setCode(1154);
             ajaxResponse.setMessage("客户信息不合法");
             return ajaxResponse;
         }
-        Customer customer = customerShow;
+        //Customer customer = customerShow;
         customer.setCreateTime(null);
         customer.setUpdateTime(null);
         customer.setId(YitIdHelper.nextId());
@@ -254,6 +253,7 @@ public class CustomerController {
             ajaxResponse.setMessage("未搜索到符合条件的内容！");
             return  ajaxResponse;
         }
+        /*
         List<CustomerShow> customerShowList = null;
         ObjectMapper objectMapper = new ObjectMapper();
         try {
@@ -277,9 +277,10 @@ public class CustomerController {
                 customerShow.setUpdateTimeStr("-");
             }
         });
+        */
         ajaxResponse.setCode(0);
         ajaxResponse.setMessage("成功");
-        ajaxResponse.setData(customerShowList);
+        ajaxResponse.setData(customerSearchResult.getCustomerList());
         ajaxResponse.setPageNum(customerSearchResult.getPageNum());
         ajaxResponse.setPageSize(customerSearchResult.getPageSize());
         ajaxResponse.setTotal(customerSearchResult.getTotal());

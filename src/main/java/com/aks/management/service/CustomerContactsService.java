@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -26,6 +28,7 @@ public class CustomerContactsService {
     
     @Resource
     private CustomerContactsMapper customerContactsMapper;
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     
     public CustomerContacts getCustomerContactsById(Long id){
         return customerContactsMapper.selectByPrimaryKey(id);
@@ -66,13 +69,13 @@ public class CustomerContactsService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         CustomerContactsExample customerContactsExample = new CustomerContactsExample();
         CustomerContactsExample.Criteria criteria = customerContactsExample.createCriteria();
-        /*if(customerContactsSearch.getCreateTimeStart() != null && customerContactsSearch.getCreateTimeEnd() != null){
+        if(customerContactsSearch.getCreateTimeStart() != null && customerContactsSearch.getCreateTimeEnd() != null){
             if(customerContactsSearch.getCreateTimeStart().compareTo(customerContactsSearch.getCreateTimeEnd()) < 0){
                 try {
-                    Date createTimeStart = sdf.parse(customerContactsSearch.getCreateTimeStart() + " 00:00:00");
-                    Date createTimeEnd = sdf.parse(customerContactsSearch.getCreateTimeEnd() + "23:59:59");
+                    LocalDateTime createTimeStart = LocalDateTime.parse(customerContactsSearch.getCreateTimeStart() + " 00:00:00",DATE_TIME_FORMATTER);
+                    LocalDateTime createTimeEnd = LocalDateTime.parse(customerContactsSearch.getCreateTimeEnd() + " 23:59:59",DATE_TIME_FORMATTER);
                     criteria.andCreateTimeBetween(createTimeStart,createTimeEnd);
-                } catch (ParseException e) {
+                } catch (Exception e) {
                     return null;
                 }
             
@@ -81,15 +84,14 @@ public class CustomerContactsService {
         if(customerContactsSearch.getUpdateTimeStart() != null && customerContactsSearch.getUpdateTimeEnd() != null){
             if(customerContactsSearch.getUpdateTimeStart().compareTo(customerContactsSearch.getUpdateTimeEnd()) < 0){
                 try {
-                    Date updateTimeStart = sdf.parse(customerContactsSearch.getUpdateTimeStart() + " 00:00:00");
-                    Date updateTimeEnd = sdf.parse(customerContactsSearch.getCreateTimeEnd() + "23:59:59");
+                    LocalDateTime updateTimeStart = LocalDateTime.parse(customerContactsSearch.getUpdateTimeStart() + " 00:00:00",DATE_TIME_FORMATTER);
+                    LocalDateTime updateTimeEnd = LocalDateTime.parse(customerContactsSearch.getCreateTimeEnd() + " 23:59:59",DATE_TIME_FORMATTER);
                     criteria.andUpdateTimeBetween(updateTimeStart,updateTimeEnd);
-                } catch (ParseException e) {
+                } catch (Exception e) {
                     return null;
                 }
             }
         }
-        */
         if(customerContactsSearch.getCcName() != null && customerContactsSearch.getCcName().compareTo("") != 0){
             criteria.andCcNameLike("%" + customerContactsSearch.getCcName() + "%");
         }

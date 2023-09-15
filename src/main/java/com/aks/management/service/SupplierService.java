@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -27,6 +29,9 @@ public class SupplierService {
     
     @Resource
     private SupplierMapper supplierMapper;
+    
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     
     public Supplier getSupplierById(Long id) {
         
@@ -70,13 +75,13 @@ public class SupplierService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         SupplierExample supplierExample = new SupplierExample();
         SupplierExample.Criteria criteria = supplierExample.createCriteria();
-        /*if(supplierSearch.getCreateTimeStart() != null && supplierSearch.getCreateTimeEnd() != null){
+        if(supplierSearch.getCreateTimeStart() != null && supplierSearch.getCreateTimeEnd() != null){
             if(supplierSearch.getCreateTimeStart().compareTo(supplierSearch.getCreateTimeEnd()) < 0){
                 try {
-                    Date createTimeStart = sdf.parse(supplierSearch.getCreateTimeStart() + " 00:00:00");
-                    Date createTimeEnd = sdf.parse(supplierSearch.getCreateTimeEnd() + "23:59:59");
+                    LocalDateTime createTimeStart = LocalDateTime.parse(supplierSearch.getCreateTimeStart() + " 00:00:00",DATE_TIME_FORMATTER);
+                    LocalDateTime createTimeEnd = LocalDateTime.parse(supplierSearch.getCreateTimeEnd() + " 23:59:59",DATE_TIME_FORMATTER);
                     criteria.andCreateTimeBetween(createTimeStart,createTimeEnd);
-                } catch (ParseException e) {
+                } catch (Exception e) {
                     return null;
                 }
     
@@ -85,14 +90,14 @@ public class SupplierService {
         if(supplierSearch.getUpdateTimeStart() != null && supplierSearch.getUpdateTimeEnd() != null){
             if(supplierSearch.getUpdateTimeStart().compareTo(supplierSearch.getUpdateTimeEnd()) < 0){
                 try {
-                    Date updateTimeStart = sdf.parse(supplierSearch.getUpdateTimeStart() + " 00:00:00");
-                    Date updateTimeEnd = sdf.parse(supplierSearch.getCreateTimeEnd() + "23:59:59");
+                    LocalDateTime updateTimeStart = LocalDateTime.parse(supplierSearch.getUpdateTimeStart() + " 00:00:00",DATE_TIME_FORMATTER);
+                    LocalDateTime updateTimeEnd = LocalDateTime.parse(supplierSearch.getCreateTimeEnd() + " 23:59:59",DATE_TIME_FORMATTER);
                     criteria.andUpdateTimeBetween(updateTimeStart,updateTimeEnd);
-                } catch (ParseException e) {
+                } catch (Exception e) {
                     return null;
                 }
             }
-        }*/
+        }
         if(supplierSearch.getSupplierName() != null && supplierSearch.getSupplierName().compareTo("") != 0){
             criteria.andSupplierNameLike("%" + supplierSearch.getSupplierName() + "%");
         }

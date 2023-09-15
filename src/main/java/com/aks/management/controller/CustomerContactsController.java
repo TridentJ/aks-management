@@ -16,6 +16,7 @@ import com.aks.management.utils.customer.CustomerContactsSearchResult;
 import com.aks.management.utils.customer.CustomerContactsShow;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.yitter.idgen.YitIdHelper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -68,6 +69,7 @@ public class CustomerContactsController {
             ajaxResponse.setMessage("客户无联系人信息");
             return ajaxResponse;
         }
+        /*
         for(CustomerContacts customerContacts : customerContactsList){
             CustomerContactsShow customerContactsShow;
             ObjectMapper objectMapper = new ObjectMapper();
@@ -90,11 +92,12 @@ public class CustomerContactsController {
             }
             customerContactsShowList.add(customerContactsShow);
         }
+        */
         
         ajaxResponse.setCode(0);
         ajaxResponse.setMessage("成功");
-        ajaxResponse.setData(customerContactsShowList);
-        
+        //ajaxResponse.setData(customerContactsShowList);
+        ajaxResponse.setData(customerContactsList);
         return ajaxResponse;
     }
     
@@ -106,19 +109,19 @@ public class CustomerContactsController {
             }
     )
     @PostMapping(value = "/add")
-    public AjaxResponse addCustomerContacts(@RequestBody List<CustomerContactsShow> customerContactsShowList){
+    public AjaxResponse addCustomerContacts(@RequestBody List<CustomerContacts> customerContactsList){
         AjaxResponse ajaxResponse = new AjaxResponse();
-        if(customerContactsShowList == null || customerContactsShowList.isEmpty()){
+        if(customerContactsList == null || customerContactsList.isEmpty()){
             ajaxResponse.setCode(1282);
             ajaxResponse.setMessage("客户联系人不合法");
             return ajaxResponse;
         }
-        int totalNum = customerContactsShowList.size();
+        int totalNum = customerContactsList.size();
         int successNum = 0;
         int failureNum = 0;
         int result = 0;
-        for( CustomerContactsShow customerContactsShow : customerContactsShowList){
-            CustomerContacts customerContacts = customerContactsShow;
+        for( CustomerContacts customerContacts : customerContactsList){
+            //CustomerContacts customerContacts = customerContactsShow;
             customerContacts.setCreateTime(null);
             customerContacts.setUpdateTime(null);
             customerContacts.setId(YitIdHelper.nextId());
@@ -271,6 +274,7 @@ public class CustomerContactsController {
         }
         List<CustomerContactsShow> customerContactsShowList = null;
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
         try {
             customerContactsShowList = objectMapper.readValue(objectMapper.writeValueAsString(customerContactsSearchResult.getCustomerContactsList()), new TypeReference<List<CustomerContactsShow>>() {});
         }catch (Exception e){
@@ -279,6 +283,7 @@ public class CustomerContactsController {
             return ajaxResponseList;
         }
         customerContactsShowList.forEach(  customerContactsShow -> {
+            /*
             try {
                 String createTime = sdf.format( customerContactsShow.getCreateTime());
                  customerContactsShow.setCreateTimeStr(createTime);
@@ -291,6 +296,7 @@ public class CustomerContactsController {
             }catch (Exception e){
                  customerContactsShow.setUpdateTimeStr("-");
             }
+            */
             try {
                 String customerName = customerService.getCustomerById( customerContactsShow.getCustomerId()).getCustomerName();
                  customerContactsShow.setCustomerName(customerName);

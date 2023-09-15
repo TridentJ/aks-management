@@ -12,8 +12,6 @@ import lombok.Data;
 @Data
 public class InvoiceBaseShow extends InvoiceBase {
     
-    private String createTimeStr;
-    private String updateTimeStr;
     private String supplierName;
     private String customerName;
     

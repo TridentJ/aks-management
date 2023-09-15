@@ -16,9 +16,9 @@ import com.aks.management.utils.AjaxResponseList;
 import com.aks.management.utils.invoiceBase.InvoiceBaseShow;
 import com.aks.management.utils.invoiceBase.InvoiceSearch;
 import com.aks.management.utils.invoiceBase.InvoiceSearchResult;
-import com.aks.management.utils.supplier.SupplierShow;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.yitter.idgen.YitIdHelper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -54,15 +54,15 @@ public class InvoiceBaseController {
             }
     )
     @RequestMapping(value = "/show",method = RequestMethod.GET)
-    public AjaxResponse showInvoiceBase(Long id, int type){
+    public AjaxResponse showInvoiceBase(Long id, Integer type){
         AjaxResponse ajaxResponse = new AjaxResponse();
-        if(id == null || id < 0){
+        if(id == null || id < 0L){
             ajaxResponse.setCode(1160);
             ajaxResponse.setMessage("发票ID不合法");
             return ajaxResponse;
         }
         List<InvoiceBase> invoiceBaseList = null;
-        List<InvoiceBaseShow> invoiceBaseShowList = new ArrayList<>();
+        //List<InvoiceBaseShow> invoiceBaseShowList = new ArrayList<>();
         if(type == 1){
             invoiceBaseList = invoiceBaseService.getInvoiceBaseBySupplierId(id);
             if(invoiceBaseList == null || invoiceBaseList.isEmpty()){
@@ -82,6 +82,7 @@ public class InvoiceBaseController {
             ajaxResponse.setMessage("操作类型错误");
             return ajaxResponse;
         }
+        /*
         for (InvoiceBase invoiceBase : invoiceBaseList) {
             InvoiceBaseShow invoiceBaseShow = null;
             ObjectMapper objectMapper = new ObjectMapper();
@@ -104,10 +105,10 @@ public class InvoiceBaseController {
             }
             invoiceBaseShowList.add(invoiceBaseShow);
         }
-        
+        */
         ajaxResponse.setCode(0);
         ajaxResponse.setMessage("成功");
-        ajaxResponse.setData(invoiceBaseShowList);
+        ajaxResponse.setData(invoiceBaseList);
         
         return ajaxResponse;
     }
@@ -120,20 +121,20 @@ public class InvoiceBaseController {
             }
     )
     @PostMapping(value = "/add")
-    public AjaxResponse addInvoiceBase(@RequestBody List<InvoiceBaseShow> invoiceBaseShowList){
+    public AjaxResponse addInvoiceBase(@RequestBody List<InvoiceBase> invoiceBaseList){
         AjaxResponse ajaxResponse = new AjaxResponse();
-        if(invoiceBaseShowList == null || invoiceBaseShowList.isEmpty()){
+        if(invoiceBaseList == null || invoiceBaseList.isEmpty()){
             ajaxResponse.setCode(1162);
             ajaxResponse.setMessage("发票信息不合法");
             return ajaxResponse;
         }
         
-        int totalNum = invoiceBaseShowList.size();
+        int totalNum = invoiceBaseList.size();
         int successNum = 0;
         int failureNum = 0;
         int result = 0;
-        for( InvoiceBaseShow invoiceBaseShow: invoiceBaseShowList){
-            InvoiceBase invoiceBase = invoiceBaseShow;
+        for( InvoiceBase invoiceBase: invoiceBaseList){
+            //InvoiceBase invoiceBase = invoiceBaseShow;
             invoiceBase.setCreateTime(null);
             invoiceBase.setUpdateTime(null);
             invoiceBase.setId(YitIdHelper.nextId());
@@ -340,14 +341,17 @@ public class InvoiceBaseController {
         }
         List<InvoiceBaseShow> invoiceBaseShowList = null;
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
         try {
             invoiceBaseShowList = objectMapper.readValue(objectMapper.writeValueAsString(invoiceSearchResult.getInvoiceBaseList()), new TypeReference<List<InvoiceBaseShow>>() {});
         }catch (Exception e){
+            //e.printStackTrace();
             ajaxResponseList.setCode(1031);
             ajaxResponseList.setMessage("类型转换错误");
             return ajaxResponseList;
         }
         invoiceBaseShowList.forEach( invoiceBaseShow -> {
+            /*
             try {
                 String createTime = sdf.format(invoiceBaseShow.getCreateTime());
                 invoiceBaseShow.setCreateTimeStr(createTime);
@@ -360,6 +364,7 @@ public class InvoiceBaseController {
             }catch (Exception e){
                 invoiceBaseShow.setUpdateTimeStr("-");
             }
+            */
             if(invoiceBaseShow.getSupplierId() != null && invoiceBaseShow.getSupplierId() > 0L){
                 try {
                     String supplierName = supplierService.getSupplierById(invoiceBaseShow.getSupplierId()).getSupplierName();

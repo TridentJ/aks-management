@@ -15,8 +15,11 @@ import com.github.pagehelper.PageHelper;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.DateFormatter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +28,9 @@ public class CustomerService {
     
     @Resource
     private CustomerMapper customerMapper;
+    
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     
     public Customer getCustomerById(Long id) {
         
@@ -65,16 +71,18 @@ public class CustomerService {
     
     
     public CustomerSearchResult searchCustomer(CustomerSearch customerSearch) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         CustomerExample customerExample = new CustomerExample();
         CustomerExample.Criteria criteria = customerExample.createCriteria();
-        /*if(customerSearch.getCreateTimeStart() != null && customerSearch.getCreateTimeEnd() != null){
+        if(customerSearch.getCreateTimeStart() != null && customerSearch.getCreateTimeEnd() != null){
             if(customerSearch.getCreateTimeStart().compareTo(customerSearch.getCreateTimeEnd()) < 0){
                 try {
-                    Date createTimeStart = sdf.parse(customerSearch.getCreateTimeStart() + " 00:00:00");
-                    Date createTimeEnd = sdf.parse(customerSearch.getCreateTimeEnd() + "23:59:59");
+                    //Date createTimeStart = sdf.parse(customerSearch.getCreateTimeStart() + " 00:00:00");
+                    //Date createTimeEnd = sdf.parse(customerSearch.getCreateTimeEnd() + "23:59:59");
+                    LocalDateTime createTimeStart = LocalDateTime.parse(customerSearch.getCreateTimeStart() + " 00:00:00",DATE_TIME_FORMATTER);
+                    LocalDateTime createTimeEnd = LocalDateTime.parse(customerSearch.getCreateTimeEnd() + " 23:59:59",DATE_TIME_FORMATTER);
                     criteria.andCreateTimeBetween(createTimeStart,createTimeEnd);
-                } catch (ParseException e) {
+                } catch (Exception e) {
                     return null;
                 }
                 
@@ -83,14 +91,14 @@ public class CustomerService {
         if(customerSearch.getUpdateTimeStart() != null && customerSearch.getUpdateTimeEnd() != null){
             if(customerSearch.getUpdateTimeStart().compareTo(customerSearch.getUpdateTimeEnd()) < 0){
                 try {
-                    Date updateTimeStart = sdf.parse(customerSearch.getUpdateTimeStart() + " 00:00:00");
-                    Date updateTimeEnd = sdf.parse(customerSearch.getCreateTimeEnd() + "23:59:59");
+                    LocalDateTime updateTimeStart = LocalDateTime.parse(customerSearch.getUpdateTimeStart() + " 00:00:00", DATE_TIME_FORMATTER);
+                    LocalDateTime updateTimeEnd = LocalDateTime.parse(customerSearch.getCreateTimeEnd() + "23:59:59", DATE_TIME_FORMATTER);
                     criteria.andUpdateTimeBetween(updateTimeStart,updateTimeEnd);
-                } catch (ParseException e) {
+                } catch (Exception e) {
                     return null;
                 }
             }
-        }*/
+        }
         if(customerSearch.getCustomerName() != null && customerSearch.getCustomerName().compareTo("") != 0){
             criteria.andCustomerNameLike("%" + customerSearch.getCustomerName() + "%");
         }

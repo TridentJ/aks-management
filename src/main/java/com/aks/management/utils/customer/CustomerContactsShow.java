@@ -12,9 +12,6 @@ import lombok.Data;
 
 @Data
 public class CustomerContactsShow extends CustomerContacts {
-    
-    private String createTimeStr;
-    private String updateTimeStr;
     private String customerName;
     
 }

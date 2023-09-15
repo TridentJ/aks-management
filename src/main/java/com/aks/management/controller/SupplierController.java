@@ -13,7 +13,6 @@ import com.aks.management.utils.AjaxResponseList;
 import com.aks.management.utils.supplier.SupplierSampleInfo;
 import com.aks.management.utils.supplier.SupplierSearch;
 import com.aks.management.utils.supplier.SupplierSearchResult;
-import com.aks.management.utils.supplier.SupplierShow;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.yitter.idgen.YitIdHelper;
@@ -123,6 +122,7 @@ public class SupplierController {
             return ajaxResponse;
         }
         //SupplierShow supplierShow = (SupplierShow) supplier;
+        /*
         SupplierShow supplierShow = null;
         ObjectMapper objectMapper = new ObjectMapper();
         try {
@@ -144,11 +144,12 @@ public class SupplierController {
         }catch (Exception e){
             supplierShow.setUpdateTimeStr("-");
         }
+        */
         //supplierShow.setComments(supplierShow.getComments());
 
         ajaxResponse.setCode(0);
         ajaxResponse.setMessage("成功");
-        ajaxResponse.setData(supplierShow);
+        ajaxResponse.setData(supplier);
         
         
         return ajaxResponse;
@@ -162,14 +163,14 @@ public class SupplierController {
             }
     )
     @PostMapping(value = "/add")
-    public AjaxResponse addSupplier(@RequestBody SupplierShow supplierShow){
+    public AjaxResponse addSupplier(@RequestBody Supplier supplier){
         AjaxResponse ajaxResponse = new AjaxResponse();
-        if(supplierShow == null){
+        if(supplier == null){
             ajaxResponse.setCode(1134);
             ajaxResponse.setMessage("供应商信息不合法");
             return ajaxResponse;
         }
-        Supplier supplier = supplierShow;
+        //Supplier supplier = supplierShow;
         supplier.setCreateTime(null);
         supplier.setUpdateTime(null);
         supplier.setId(YitIdHelper.nextId());
@@ -254,6 +255,7 @@ public class SupplierController {
             ajaxResponse.setMessage("未搜索到符合条件的内容！");
             return  ajaxResponse;
         }
+        /*
         List<SupplierShow> supplierShowList = null;
         ObjectMapper objectMapper = new ObjectMapper();
         try {
@@ -277,9 +279,10 @@ public class SupplierController {
                 supplierShow.setUpdateTimeStr("-");
             }
         });
+        */
         ajaxResponse.setCode(0);
         ajaxResponse.setMessage("成功");
-        ajaxResponse.setData(supplierShowList);
+        ajaxResponse.setData(supplierSearchResult.getSupplierList());
         ajaxResponse.setPageNum(supplierSearchResult.getPageNum());
         ajaxResponse.setPageSize(supplierSearchResult.getPageSize());
         ajaxResponse.setTotal(supplierSearchResult.getTotal());

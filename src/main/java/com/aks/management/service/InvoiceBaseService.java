@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -26,6 +28,7 @@ public class InvoiceBaseService {
     
     @Resource
     private InvoiceBaseMapper invoiceBaseMapper;
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     
     public List<InvoiceBase> getAllInvoiceBase(Integer pageNum,Integer pageSize){
         InvoiceBaseExample invoiceBaseExample = new InvoiceBaseExample();
@@ -87,7 +90,7 @@ public class InvoiceBaseService {
     }
     
     public InvoiceSearchResult searchInvoiceBase(InvoiceSearch invoiceSearch){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         InvoiceBaseExample invoiceBaseExample = new InvoiceBaseExample();
         InvoiceBaseExample.Criteria criteria = invoiceBaseExample.createCriteria();
         if(invoiceSearch.getSearchType() == 1){
@@ -95,14 +98,13 @@ public class InvoiceBaseService {
         }else{
             criteria.andCustomerIdGreaterThan(0L);
         }
-        /*
         if(invoiceSearch.getCreateTimeStart() != null && invoiceSearch.getCreateTimeEnd() != null){
             if(invoiceSearch.getCreateTimeStart().compareTo(invoiceSearch.getCreateTimeEnd()) < 0){
                 try {
-                    Date createTimeStart = sdf.parse(invoiceSearch.getCreateTimeStart() + " 00:00:00");
-                    Date createTimeEnd = sdf.parse(invoiceSearch.getCreateTimeEnd() + "23:59:59");
+                    LocalDateTime createTimeStart = LocalDateTime.parse(invoiceSearch.getCreateTimeStart() + " 00:00:00",DATE_TIME_FORMATTER);
+                    LocalDateTime createTimeEnd = LocalDateTime.parse(invoiceSearch.getCreateTimeEnd() + " 23:59:59",DATE_TIME_FORMATTER);
                     criteria.andCreateTimeBetween(createTimeStart,createTimeEnd);
-                } catch (ParseException e) {
+                } catch (Exception e) {
                     return null;
                 }
             
@@ -111,15 +113,14 @@ public class InvoiceBaseService {
         if(invoiceSearch.getUpdateTimeStart() != null && invoiceSearch.getUpdateTimeEnd() != null){
             if(invoiceSearch.getUpdateTimeStart().compareTo(invoiceSearch.getUpdateTimeEnd()) < 0){
                 try {
-                    Date updateTimeStart = sdf.parse(invoiceSearch.getUpdateTimeStart() + " 00:00:00");
-                    Date updateTimeEnd = sdf.parse(invoiceSearch.getCreateTimeEnd() + "23:59:59");
+                    LocalDateTime updateTimeStart = LocalDateTime.parse(invoiceSearch.getUpdateTimeStart() + " 00:00:00",DATE_TIME_FORMATTER);
+                    LocalDateTime updateTimeEnd = LocalDateTime.parse(invoiceSearch.getCreateTimeEnd() + " 23:59:59",DATE_TIME_FORMATTER);
                     criteria.andUpdateTimeBetween(updateTimeStart,updateTimeEnd);
-                } catch (ParseException e) {
+                } catch (Exception e) {
                     return null;
                 }
             }
         }
-        */
         if(invoiceSearch.getCompany() != null && invoiceSearch.getCompany().compareTo("") != 0){
             criteria.andCompanyLike("%" + invoiceSearch.getCompany() + "%");
         }

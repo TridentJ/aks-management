@@ -12,8 +12,6 @@ import lombok.Data;
 @Data
 public class SupplierContactsShow  extends SupplierContacts {
     
-    private String createTimeStr;
-    private String updateTimeStr;
     private String supplierName;
     
 }

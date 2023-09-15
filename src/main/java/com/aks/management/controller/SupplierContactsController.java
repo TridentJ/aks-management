@@ -19,6 +19,7 @@ import com.aks.management.utils.supplier.SupplierContactsSearchResult;
 import com.aks.management.utils.supplier.SupplierContactsShow;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.yitter.idgen.YitIdHelper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -62,7 +63,7 @@ public class SupplierContactsController {
             ajaxResponse.setMessage("供应商ID不合法");
             return ajaxResponse;
         }
-        List<SupplierContactsShow> supplierContactsShowList = new ArrayList<>();
+        //List<SupplierContactsShow> supplierContactsShowList = new ArrayList<>();
         
             
         List<SupplierContacts> supplierContactsList = supplierContactsService.getSupplierContactsBySupplierId(supplierId);
@@ -71,6 +72,7 @@ public class SupplierContactsController {
             ajaxResponse.setMessage("供应商无联系人信息");
             return ajaxResponse;
         }
+        /*
         for(SupplierContacts supplierContacts : supplierContactsList){
             SupplierContactsShow supplierContactsShow;
             ObjectMapper objectMapper = new ObjectMapper();
@@ -93,10 +95,11 @@ public class SupplierContactsController {
             }
             supplierContactsShowList.add(supplierContactsShow);
         }
-        
+        */
         ajaxResponse.setCode(0);
         ajaxResponse.setMessage("成功");
-        ajaxResponse.setData(supplierContactsShowList);
+        //ajaxResponse.setData(supplierContactsShowList);
+        ajaxResponse.setData(supplierContactsList);
         
         return ajaxResponse;
     }
@@ -109,19 +112,19 @@ public class SupplierContactsController {
             }
     )
     @PostMapping(value = "/add")
-    public AjaxResponse addSupplierContacts(@RequestBody List<SupplierContactsShow> supplierContactsShowList){
+    public AjaxResponse addSupplierContacts(@RequestBody List<SupplierContacts> supplierContactsList){
         AjaxResponse ajaxResponse = new AjaxResponse();
-        if(supplierContactsShowList == null || supplierContactsShowList.isEmpty()){
+        if(supplierContactsList == null || supplierContactsList.isEmpty()){
             ajaxResponse.setCode(1192);
             ajaxResponse.setMessage("供应商联系人不合法");
             return ajaxResponse;
         }
-        int totalNum = supplierContactsShowList.size();
+        int totalNum = supplierContactsList.size();
         int successNum = 0;
         int failureNum = 0;
         int result = 0;
-        for( SupplierContactsShow supplierContactsShow : supplierContactsShowList){
-            SupplierContacts supplierContacts = supplierContactsShow;
+        for( SupplierContacts supplierContacts : supplierContactsList){
+            //SupplierContacts supplierContacts = supplierContactsShow;
             supplierContacts.setCreateTime(null);
             supplierContacts.setUpdateTime(null);
             supplierContacts.setId(YitIdHelper.nextId());
@@ -274,6 +277,7 @@ public class SupplierContactsController {
         }
         List<SupplierContactsShow> supplierContactsShowList = null;
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
         try {
             supplierContactsShowList = objectMapper.readValue(objectMapper.writeValueAsString(supplierContactsSearchResult.getSupplierContactsList()), new TypeReference<List<SupplierContactsShow>>() {});
         }catch (Exception e){
@@ -282,6 +286,7 @@ public class SupplierContactsController {
             return ajaxResponseList;
         }
         supplierContactsShowList.forEach(  supplierContactsShow -> {
+            /*
             try {
                 String createTime = sdf.format( supplierContactsShow.getCreateTime());
                  supplierContactsShow.setCreateTimeStr(createTime);
@@ -294,6 +299,7 @@ public class SupplierContactsController {
             }catch (Exception e){
                  supplierContactsShow.setUpdateTimeStr("-");
             }
+            */
             try {
                 String supplierName = supplierService.getSupplierById( supplierContactsShow.getSupplierId()).getSupplierName();
                  supplierContactsShow.setSupplierName(supplierName);
