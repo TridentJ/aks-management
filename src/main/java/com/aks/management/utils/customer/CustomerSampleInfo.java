@@ -8,6 +8,8 @@ package com.aks.management.utils.customer;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 public class CustomerSampleInfo {
 
@@ -19,7 +21,7 @@ public class CustomerSampleInfo {
     private String telephone;
     private Integer orderQuantity;
     private Integer state;
-    private String createTime;
+    private LocalDateTime createTime;
     
     
     

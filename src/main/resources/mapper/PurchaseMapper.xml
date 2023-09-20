@@ -23,15 +23,15 @@
     <result column="price_excluding_tax" jdbcType="DOUBLE" property="priceExcludingTax" />
     <result column="cargo_price_including_tax" jdbcType="DOUBLE" property="cargoPriceIncludingTax" />
     <result column="cost" jdbcType="DOUBLE" property="cost" />
+    <result column="include_freight" jdbcType="INTEGER" property="includeFreight" />
     <result column="pay_method" jdbcType="INTEGER" property="payMethod" />
     <result column="pay_type" jdbcType="INTEGER" property="payType" />
     <result column="deposit" jdbcType="DOUBLE" property="deposit" />
     <result column="deposit_back_date" jdbcType="DATE" property="depositBackDate" />
-    <result column="deposti_flag" jdbcType="INTEGER" property="depostiFlag" />
+    <result column="deposit_flag" jdbcType="INTEGER" property="depositFlag" />
     <result column="real_deposit_back_date" jdbcType="DATE" property="realDepositBackDate" />
     <result column="invoice_id" jdbcType="BIGINT" property="invoiceId" />
     <result column="invoice_sum" jdbcType="DOUBLE" property="invoiceSum" />
-    <result column="include_freight" jdbcType="INTEGER" property="includeFreight" />
     <result column="invoice_type" jdbcType="INTEGER" property="invoiceType" />
     <result column="invoice" jdbcType="INTEGER" property="invoice" />
     <result column="invoice_date" jdbcType="DATE" property="invoiceDate" />
@@ -123,10 +123,10 @@
     id, purchase_name, supplier_id, purchase_self_id, purchase_peer_id, sign_time, description, 
     attachment, deliver_address, contract_deliver_date, expect_delivery_date, real_delivery_date, 
     price_including_tax, tax_point, price_excluding_tax, cargo_price_including_tax, cost, 
-    pay_method, pay_type, deposit, deposit_back_date, deposti_flag, real_deposit_back_date, 
-    invoice_id, invoice_sum, include_freight, invoice_type, invoice, invoice_date, receive_invoice_date, 
-    contacts_id, salesman_id, express_company, express_id, flag, flag2, operator_id, 
-    purchase_state, state, create_time, update_time, comments
+    include_freight, pay_method, pay_type, deposit, deposit_back_date, deposit_flag, 
+    real_deposit_back_date, invoice_id, invoice_sum, invoice_type, invoice, invoice_date, 
+    receive_invoice_date, contacts_id, salesman_id, express_company, express_id, flag, 
+    flag2, operator_id, purchase_state, state, create_time, update_time, comments
   </sql>
   <select id="selectByExample" parameterType="com.aks.management.bean.PurchaseExample" resultMap="BaseResultMap">
     <!--
@@ -184,10 +184,10 @@
       description, attachment, deliver_address, 
       contract_deliver_date, expect_delivery_date, real_delivery_date, 
       price_including_tax, tax_point, price_excluding_tax, 
-      cargo_price_including_tax, cost, pay_method, 
-      pay_type, deposit, deposit_back_date, 
-      deposti_flag, real_deposit_back_date, invoice_id, 
-      invoice_sum, include_freight, invoice_type, 
+      cargo_price_including_tax, cost, include_freight, 
+      pay_method, pay_type, deposit, 
+      deposit_back_date, deposit_flag, real_deposit_back_date, 
+      invoice_id, invoice_sum, invoice_type, 
       invoice, invoice_date, receive_invoice_date, 
       contacts_id, salesman_id, express_company, 
       express_id, flag, flag2, 
@@ -199,10 +199,10 @@
       #{description,jdbcType=VARCHAR}, #{attachment,jdbcType=VARCHAR}, #{deliverAddress,jdbcType=VARCHAR}, 
       #{contractDeliverDate,jdbcType=DATE}, #{expectDeliveryDate,jdbcType=DATE}, #{realDeliveryDate,jdbcType=DATE}, 
       #{priceIncludingTax,jdbcType=DOUBLE}, #{taxPoint,jdbcType=DOUBLE}, #{priceExcludingTax,jdbcType=DOUBLE}, 
-      #{cargoPriceIncludingTax,jdbcType=DOUBLE}, #{cost,jdbcType=DOUBLE}, #{payMethod,jdbcType=INTEGER}, 
-      #{payType,jdbcType=INTEGER}, #{deposit,jdbcType=DOUBLE}, #{depositBackDate,jdbcType=DATE}, 
-      #{depostiFlag,jdbcType=INTEGER}, #{realDepositBackDate,jdbcType=DATE}, #{invoiceId,jdbcType=BIGINT}, 
-      #{invoiceSum,jdbcType=DOUBLE}, #{includeFreight,jdbcType=INTEGER}, #{invoiceType,jdbcType=INTEGER}, 
+      #{cargoPriceIncludingTax,jdbcType=DOUBLE}, #{cost,jdbcType=DOUBLE}, #{includeFreight,jdbcType=INTEGER}, 
+      #{payMethod,jdbcType=INTEGER}, #{payType,jdbcType=INTEGER}, #{deposit,jdbcType=DOUBLE}, 
+      #{depositBackDate,jdbcType=DATE}, #{depositFlag,jdbcType=INTEGER}, #{realDepositBackDate,jdbcType=DATE}, 
+      #{invoiceId,jdbcType=BIGINT}, #{invoiceSum,jdbcType=DOUBLE}, #{invoiceType,jdbcType=INTEGER}, 
       #{invoice,jdbcType=INTEGER}, #{invoiceDate,jdbcType=DATE}, #{receiveInvoiceDate,jdbcType=DATE}, 
       #{contactsId,jdbcType=BIGINT}, #{salesmanId,jdbcType=BIGINT}, #{expressCompany,jdbcType=VARCHAR}, 
       #{expressId,jdbcType=VARCHAR}, #{flag,jdbcType=VARCHAR}, #{flag2,jdbcType=VARCHAR}, 
@@ -268,6 +268,9 @@
       <if test="cost != null">
         cost,
       </if>
+      <if test="includeFreight != null">
+        include_freight,
+      </if>
       <if test="payMethod != null">
         pay_method,
       </if>
@@ -280,8 +283,8 @@
       <if test="depositBackDate != null">
         deposit_back_date,
       </if>
-      <if test="depostiFlag != null">
-        deposti_flag,
+      <if test="depositFlag != null">
+        deposit_flag,
       </if>
       <if test="realDepositBackDate != null">
         real_deposit_back_date,
@@ -291,9 +294,6 @@
       </if>
       <if test="invoiceSum != null">
         invoice_sum,
-      </if>
-      <if test="includeFreight != null">
-        include_freight,
       </if>
       <if test="invoiceType != null">
         invoice_type,
@@ -396,6 +396,9 @@
       <if test="cost != null">
         #{cost,jdbcType=DOUBLE},
       </if>
+      <if test="includeFreight != null">
+        #{includeFreight,jdbcType=INTEGER},
+      </if>
       <if test="payMethod != null">
         #{payMethod,jdbcType=INTEGER},
       </if>
@@ -408,8 +411,8 @@
       <if test="depositBackDate != null">
         #{depositBackDate,jdbcType=DATE},
       </if>
-      <if test="depostiFlag != null">
-        #{depostiFlag,jdbcType=INTEGER},
+      <if test="depositFlag != null">
+        #{depositFlag,jdbcType=INTEGER},
       </if>
       <if test="realDepositBackDate != null">
         #{realDepositBackDate,jdbcType=DATE},
@@ -419,9 +422,6 @@
       </if>
       <if test="invoiceSum != null">
         #{invoiceSum,jdbcType=DOUBLE},
-      </if>
-      <if test="includeFreight != null">
-        #{includeFreight,jdbcType=INTEGER},
       </if>
       <if test="invoiceType != null">
         #{invoiceType,jdbcType=INTEGER},
@@ -541,6 +541,9 @@
       <if test="row.cost != null">
         cost = #{row.cost,jdbcType=DOUBLE},
       </if>
+      <if test="row.includeFreight != null">
+        include_freight = #{row.includeFreight,jdbcType=INTEGER},
+      </if>
       <if test="row.payMethod != null">
         pay_method = #{row.payMethod,jdbcType=INTEGER},
       </if>
@@ -553,8 +556,8 @@
       <if test="row.depositBackDate != null">
         deposit_back_date = #{row.depositBackDate,jdbcType=DATE},
       </if>
-      <if test="row.depostiFlag != null">
-        deposti_flag = #{row.depostiFlag,jdbcType=INTEGER},
+      <if test="row.depositFlag != null">
+        deposit_flag = #{row.depositFlag,jdbcType=INTEGER},
       </if>
       <if test="row.realDepositBackDate != null">
         real_deposit_back_date = #{row.realDepositBackDate,jdbcType=DATE},
@@ -564,9 +567,6 @@
       </if>
       <if test="row.invoiceSum != null">
         invoice_sum = #{row.invoiceSum,jdbcType=DOUBLE},
-      </if>
-      <if test="row.includeFreight != null">
-        include_freight = #{row.includeFreight,jdbcType=INTEGER},
       </if>
       <if test="row.invoiceType != null">
         invoice_type = #{row.invoiceType,jdbcType=INTEGER},
@@ -644,15 +644,15 @@
       price_excluding_tax = #{row.priceExcludingTax,jdbcType=DOUBLE},
       cargo_price_including_tax = #{row.cargoPriceIncludingTax,jdbcType=DOUBLE},
       cost = #{row.cost,jdbcType=DOUBLE},
+      include_freight = #{row.includeFreight,jdbcType=INTEGER},
       pay_method = #{row.payMethod,jdbcType=INTEGER},
       pay_type = #{row.payType,jdbcType=INTEGER},
       deposit = #{row.deposit,jdbcType=DOUBLE},
       deposit_back_date = #{row.depositBackDate,jdbcType=DATE},
-      deposti_flag = #{row.depostiFlag,jdbcType=INTEGER},
+      deposit_flag = #{row.depositFlag,jdbcType=INTEGER},
       real_deposit_back_date = #{row.realDepositBackDate,jdbcType=DATE},
       invoice_id = #{row.invoiceId,jdbcType=BIGINT},
       invoice_sum = #{row.invoiceSum,jdbcType=DOUBLE},
-      include_freight = #{row.includeFreight,jdbcType=INTEGER},
       invoice_type = #{row.invoiceType,jdbcType=INTEGER},
       invoice = #{row.invoice,jdbcType=INTEGER},
       invoice_date = #{row.invoiceDate,jdbcType=DATE},
@@ -728,6 +728,9 @@
       <if test="cost != null">
         cost = #{cost,jdbcType=DOUBLE},
       </if>
+      <if test="includeFreight != null">
+        include_freight = #{includeFreight,jdbcType=INTEGER},
+      </if>
       <if test="payMethod != null">
         pay_method = #{payMethod,jdbcType=INTEGER},
       </if>
@@ -740,8 +743,8 @@
       <if test="depositBackDate != null">
         deposit_back_date = #{depositBackDate,jdbcType=DATE},
       </if>
-      <if test="depostiFlag != null">
-        deposti_flag = #{depostiFlag,jdbcType=INTEGER},
+      <if test="depositFlag != null">
+        deposit_flag = #{depositFlag,jdbcType=INTEGER},
       </if>
       <if test="realDepositBackDate != null">
         real_deposit_back_date = #{realDepositBackDate,jdbcType=DATE},
@@ -751,9 +754,6 @@
       </if>
       <if test="invoiceSum != null">
         invoice_sum = #{invoiceSum,jdbcType=DOUBLE},
-      </if>
-      <if test="includeFreight != null">
-        include_freight = #{includeFreight,jdbcType=INTEGER},
       </if>
       <if test="invoiceType != null">
         invoice_type = #{invoiceType,jdbcType=INTEGER},
@@ -828,15 +828,15 @@
       price_excluding_tax = #{priceExcludingTax,jdbcType=DOUBLE},
       cargo_price_including_tax = #{cargoPriceIncludingTax,jdbcType=DOUBLE},
       cost = #{cost,jdbcType=DOUBLE},
+      include_freight = #{includeFreight,jdbcType=INTEGER},
       pay_method = #{payMethod,jdbcType=INTEGER},
       pay_type = #{payType,jdbcType=INTEGER},
       deposit = #{deposit,jdbcType=DOUBLE},
       deposit_back_date = #{depositBackDate,jdbcType=DATE},
-      deposti_flag = #{depostiFlag,jdbcType=INTEGER},
+      deposit_flag = #{depositFlag,jdbcType=INTEGER},
       real_deposit_back_date = #{realDepositBackDate,jdbcType=DATE},
       invoice_id = #{invoiceId,jdbcType=BIGINT},
       invoice_sum = #{invoiceSum,jdbcType=DOUBLE},
-      include_freight = #{includeFreight,jdbcType=INTEGER},
       invoice_type = #{invoiceType,jdbcType=INTEGER},
       invoice = #{invoice,jdbcType=INTEGER},
       invoice_date = #{invoiceDate,jdbcType=DATE},

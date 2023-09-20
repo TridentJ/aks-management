@@ -137,6 +137,7 @@ public class CustomerService {
         if(customerSearch.getComments() != null && customerSearch.getComments().compareTo("") != 0){
             criteria.andCommentsLike("%" + customerSearch.getComments() + "%");
         }
+        customerExample.setOrderByClause("id desc");
         PageHelper.startPage(customerSearch.getPageNum(),customerSearch.getPageSize());
         List<Customer> customerList = customerMapper.selectByExample(customerExample);
         CustomerSearchResult customerSearchResult = new CustomerSearchResult();

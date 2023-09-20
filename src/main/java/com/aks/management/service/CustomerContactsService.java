@@ -130,6 +130,7 @@ public class CustomerContactsService {
         if(customerContactsSearch.getComments() != null && customerContactsSearch.getComments().compareTo("") != 0){
             criteria.andCommentsLike("%" + customerContactsSearch.getComments() + "%");
         }
+        customerContactsExample.setOrderByClause("id desc");
         PageHelper.startPage(customerContactsSearch.getPageNum(),customerContactsSearch.getPageSize());
         List<CustomerContacts> customerContactsList = customerContactsMapper.selectByExample(customerContactsExample);
         CustomerContactsSearchResult customerContactsSearchResult = new CustomerContactsSearchResult();

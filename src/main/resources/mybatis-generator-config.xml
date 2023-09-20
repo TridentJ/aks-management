@@ -34,6 +34,9 @@
         
         <!--<generatedKey column="id" sqlStatement="JDBC" identity="true"/>-->
     
+        <table tableName="purchase">
+        </table>
+    <!--
         <table tableName="cargo">
         </table>
         <table tableName="cargo_change_record">
@@ -76,6 +79,7 @@
         </table>
         <table tableName="user_role">
         </table>
+        -->
     </context>
 
 

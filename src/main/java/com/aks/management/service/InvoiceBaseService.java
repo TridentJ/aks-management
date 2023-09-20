@@ -150,6 +150,7 @@ public class InvoiceBaseService {
         if(invoiceSearch.getComments() != null && invoiceSearch.getComments().compareTo("") != 0){
             criteria.andCommentsLike("%" + invoiceSearch.getComments() + "%");
         }
+        invoiceBaseExample.setOrderByClause("id desc");
         PageHelper.startPage(invoiceSearch.getPageNum(),invoiceSearch.getPageSize());
         List<InvoiceBase> invoiceBaseList = invoiceBaseMapper.selectByExample(invoiceBaseExample);
         InvoiceSearchResult invoiceSearchResult = new InvoiceSearchResult();

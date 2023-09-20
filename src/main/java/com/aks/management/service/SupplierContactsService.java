@@ -134,6 +134,7 @@ public class SupplierContactsService {
         if(supplierContactsSearch.getComments() != null && supplierContactsSearch.getComments().compareTo("") != 0){
             criteria.andCommentsLike("%" + supplierContactsSearch.getComments() + "%");
         }
+        supplierContactsExample.setOrderByClause("id desc");
         PageHelper.startPage(supplierContactsSearch.getPageNum(),supplierContactsSearch.getPageSize());
         List<SupplierContacts> supplierContactsList = supplierContactsMapper.selectByExample(supplierContactsExample);
         SupplierContactsSearchResult supplierContactsSearchResult = new SupplierContactsSearchResult();

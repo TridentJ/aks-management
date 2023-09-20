@@ -8,11 +8,20 @@ package com.aks.management.controller;
 
 import com.aks.management.bean.Purchase;
 import com.aks.management.bean.Supplier;
+import com.aks.management.bean.SupplierContacts;
+import com.aks.management.bean.User;
 import com.aks.management.service.PurchaseService;
+import com.aks.management.service.SupplierContactsService;
 import com.aks.management.service.SupplierService;
+import com.aks.management.service.UserService;
 import com.aks.management.utils.AjaxResponse;
 import com.aks.management.utils.AjaxResponseList;
 import com.aks.management.utils.purchase.PurchaseSampleList;
+import com.aks.management.utils.purchase.PurchaseShow;
+import com.aks.management.utils.supplier.SupplierContactsShow;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,6 +31,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,9 +45,16 @@ public class PurchaseController {
     private PurchaseService purchaseService;
     @Resource
     private SupplierService supplierService;
+    @Resource
+    private SupplierContactsService supplierContactsService;
+    @Resource
+    private UserService userService;
     
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     private SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     
     @Operation(
             summary = "采购单清单",
@@ -80,12 +98,13 @@ public class PurchaseController {
             purchaseSampleList.setDeposit(purchase.getDeposit());
             purchaseSampleList.setPriceIncludingTax(purchase.getPriceIncludingTax());
             try {
-                purchaseSampleList.setSignTime(sdf.format(purchase.getSignTime()));
+                //LocalDateTime signTime = LocalDateTime.parse(purchase.getSignTime(),DATE_FORMATTER);
+                purchaseSampleList.setSignTime(purchase.getSignTime().format(DATE_FORMATTER));
             }catch (Exception e){
                 purchaseSampleList.setSignTime("-");
             }
             try {
-                purchaseSampleList.setContractDeliverDate(sdf.format(purchase.getContractDeliverDate()));
+                purchaseSampleList.setContractDeliverDate(purchase.getContractDeliverDate().format(DATE_FORMATTER));
             }catch (Exception e){
                 purchaseSampleList.setContractDeliverDate("-");
             }
@@ -127,9 +146,51 @@ public class PurchaseController {
             ajaxResponse.setMessage("查询的采购单不存在");
             return ajaxResponse;
         }
+        PurchaseShow purchaseShow = null;
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        try {
+            purchaseShow = objectMapper.readValue(objectMapper.writeValueAsString(purchase), new TypeReference<PurchaseShow>() {});
+        }catch (Exception e){
+            ajaxResponse.setCode(1031);
+            ajaxResponse.setMessage("类型转换错误");
+            return ajaxResponse;
+        }
+        if(purchaseShow == null){
+            ajaxResponse.setCode(1124);
+            ajaxResponse.setMessage("查询的采购单不存在");
+            return ajaxResponse;
+        }
+        if ( purchase.getSupplierId() != null && purchase.getSupplierId() > 0L){
+            Supplier supplier = supplierService.getSupplierById(purchase.getSupplierId());
+            if(supplier != null){
+                purchaseShow.setSupplierName(supplier.getSupplierName());
+            }
+        }
+        if ( purchase.getContactsId() != null && purchase.getContactsId() > 0L){
+            
+            SupplierContacts supplierContacts = supplierContactsService.getSupplierContactsById(purchase.getContactsId());
+            if(supplierContacts != null){
+                purchaseShow.setContactsName(supplierContacts.getScName());
+            }
+        }
+        if(purchase.getSalesmanId() != null && purchase.getSalesmanId() > 0L){
+            User user = userService.getUserById(purchase.getSalesmanId());
+            if(user != null){
+                purchaseShow.setSalesmanName(user.getNickName());
+            }
+        }
+        /*
+        if(purchase.getOperatorId() != null && purchase.getOperatorId() > 0L){
+            User user = userService.getUserById(purchase.getOperatorId());
+            if(user != null){
+                purchaseShow.setOperatorName(user.getNickName());
+            }
+        }
+        */
         ajaxResponse.setCode(0);
         ajaxResponse.setMessage("成功");
-        ajaxResponse.setData(purchase);
+        ajaxResponse.setData(purchaseShow);
         return ajaxResponse;
     }
     

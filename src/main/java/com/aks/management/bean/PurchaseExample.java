@@ -1276,6 +1276,66 @@ public class PurchaseExample {
             return (Criteria) this;
         }
 
+        public Criteria andIncludeFreightIsNull() {
+            addCriterion("include_freight is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncludeFreightIsNotNull() {
+            addCriterion("include_freight is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncludeFreightEqualTo(Integer value) {
+            addCriterion("include_freight =", value, "includeFreight");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncludeFreightNotEqualTo(Integer value) {
+            addCriterion("include_freight <>", value, "includeFreight");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncludeFreightGreaterThan(Integer value) {
+            addCriterion("include_freight >", value, "includeFreight");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncludeFreightGreaterThanOrEqualTo(Integer value) {
+            addCriterion("include_freight >=", value, "includeFreight");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncludeFreightLessThan(Integer value) {
+            addCriterion("include_freight <", value, "includeFreight");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncludeFreightLessThanOrEqualTo(Integer value) {
+            addCriterion("include_freight <=", value, "includeFreight");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncludeFreightIn(List<Integer> values) {
+            addCriterion("include_freight in", values, "includeFreight");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncludeFreightNotIn(List<Integer> values) {
+            addCriterion("include_freight not in", values, "includeFreight");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncludeFreightBetween(Integer value1, Integer value2) {
+            addCriterion("include_freight between", value1, value2, "includeFreight");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncludeFreightNotBetween(Integer value1, Integer value2) {
+            addCriterion("include_freight not between", value1, value2, "includeFreight");
+            return (Criteria) this;
+        }
+
         public Criteria andPayMethodIsNull() {
             addCriterion("pay_method is null");
             return (Criteria) this;
@@ -1516,63 +1576,63 @@ public class PurchaseExample {
             return (Criteria) this;
         }
 
-        public Criteria andDepostiFlagIsNull() {
-            addCriterion("deposti_flag is null");
+        public Criteria andDepositFlagIsNull() {
+            addCriterion("deposit_flag is null");
             return (Criteria) this;
         }
 
-        public Criteria andDepostiFlagIsNotNull() {
-            addCriterion("deposti_flag is not null");
+        public Criteria andDepositFlagIsNotNull() {
+            addCriterion("deposit_flag is not null");
             return (Criteria) this;
         }
 
-        public Criteria andDepostiFlagEqualTo(Integer value) {
-            addCriterion("deposti_flag =", value, "depostiFlag");
+        public Criteria andDepositFlagEqualTo(Integer value) {
+            addCriterion("deposit_flag =", value, "depositFlag");
             return (Criteria) this;
         }
 
-        public Criteria andDepostiFlagNotEqualTo(Integer value) {
-            addCriterion("deposti_flag <>", value, "depostiFlag");
+        public Criteria andDepositFlagNotEqualTo(Integer value) {
+            addCriterion("deposit_flag <>", value, "depositFlag");
             return (Criteria) this;
         }
 
-        public Criteria andDepostiFlagGreaterThan(Integer value) {
-            addCriterion("deposti_flag >", value, "depostiFlag");
+        public Criteria andDepositFlagGreaterThan(Integer value) {
+            addCriterion("deposit_flag >", value, "depositFlag");
             return (Criteria) this;
         }
 
-        public Criteria andDepostiFlagGreaterThanOrEqualTo(Integer value) {
-            addCriterion("deposti_flag >=", value, "depostiFlag");
+        public Criteria andDepositFlagGreaterThanOrEqualTo(Integer value) {
+            addCriterion("deposit_flag >=", value, "depositFlag");
             return (Criteria) this;
         }
 
-        public Criteria andDepostiFlagLessThan(Integer value) {
-            addCriterion("deposti_flag <", value, "depostiFlag");
+        public Criteria andDepositFlagLessThan(Integer value) {
+            addCriterion("deposit_flag <", value, "depositFlag");
             return (Criteria) this;
         }
 
-        public Criteria andDepostiFlagLessThanOrEqualTo(Integer value) {
-            addCriterion("deposti_flag <=", value, "depostiFlag");
+        public Criteria andDepositFlagLessThanOrEqualTo(Integer value) {
+            addCriterion("deposit_flag <=", value, "depositFlag");
             return (Criteria) this;
         }
 
-        public Criteria andDepostiFlagIn(List<Integer> values) {
-            addCriterion("deposti_flag in", values, "depostiFlag");
+        public Criteria andDepositFlagIn(List<Integer> values) {
+            addCriterion("deposit_flag in", values, "depositFlag");
             return (Criteria) this;
         }
 
-        public Criteria andDepostiFlagNotIn(List<Integer> values) {
-            addCriterion("deposti_flag not in", values, "depostiFlag");
+        public Criteria andDepositFlagNotIn(List<Integer> values) {
+            addCriterion("deposit_flag not in", values, "depositFlag");
             return (Criteria) this;
         }
 
-        public Criteria andDepostiFlagBetween(Integer value1, Integer value2) {
-            addCriterion("deposti_flag between", value1, value2, "depostiFlag");
+        public Criteria andDepositFlagBetween(Integer value1, Integer value2) {
+            addCriterion("deposit_flag between", value1, value2, "depositFlag");
             return (Criteria) this;
         }
 
-        public Criteria andDepostiFlagNotBetween(Integer value1, Integer value2) {
-            addCriterion("deposti_flag not between", value1, value2, "depostiFlag");
+        public Criteria andDepositFlagNotBetween(Integer value1, Integer value2) {
+            addCriterion("deposit_flag not between", value1, value2, "depositFlag");
             return (Criteria) this;
         }
 
@@ -1753,66 +1813,6 @@ public class PurchaseExample {
 
         public Criteria andInvoiceSumNotBetween(Double value1, Double value2) {
             addCriterion("invoice_sum not between", value1, value2, "invoiceSum");
-            return (Criteria) this;
-        }
-
-        public Criteria andIncludeFreightIsNull() {
-            addCriterion("include_freight is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andIncludeFreightIsNotNull() {
-            addCriterion("include_freight is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andIncludeFreightEqualTo(Integer value) {
-            addCriterion("include_freight =", value, "includeFreight");
-            return (Criteria) this;
-        }
-
-        public Criteria andIncludeFreightNotEqualTo(Integer value) {
-            addCriterion("include_freight <>", value, "includeFreight");
-            return (Criteria) this;
-        }
-
-        public Criteria andIncludeFreightGreaterThan(Integer value) {
-            addCriterion("include_freight >", value, "includeFreight");
-            return (Criteria) this;
-        }
-
-        public Criteria andIncludeFreightGreaterThanOrEqualTo(Integer value) {
-            addCriterion("include_freight >=", value, "includeFreight");
-            return (Criteria) this;
-        }
-
-        public Criteria andIncludeFreightLessThan(Integer value) {
-            addCriterion("include_freight <", value, "includeFreight");
-            return (Criteria) this;
-        }
-
-        public Criteria andIncludeFreightLessThanOrEqualTo(Integer value) {
-            addCriterion("include_freight <=", value, "includeFreight");
-            return (Criteria) this;
-        }
-
-        public Criteria andIncludeFreightIn(List<Integer> values) {
-            addCriterion("include_freight in", values, "includeFreight");
-            return (Criteria) this;
-        }
-
-        public Criteria andIncludeFreightNotIn(List<Integer> values) {
-            addCriterion("include_freight not in", values, "includeFreight");
-            return (Criteria) this;
-        }
-
-        public Criteria andIncludeFreightBetween(Integer value1, Integer value2) {
-            addCriterion("include_freight between", value1, value2, "includeFreight");
-            return (Criteria) this;
-        }
-
-        public Criteria andIncludeFreightNotBetween(Integer value1, Integer value2) {
-            addCriterion("include_freight not between", value1, value2, "includeFreight");
             return (Criteria) this;
         }
 

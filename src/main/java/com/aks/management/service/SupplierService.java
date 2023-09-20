@@ -72,7 +72,7 @@ public class SupplierService {
     
     
     public SupplierSearchResult searchSupplier(SupplierSearch supplierSearch) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         SupplierExample supplierExample = new SupplierExample();
         SupplierExample.Criteria criteria = supplierExample.createCriteria();
         if(supplierSearch.getCreateTimeStart() != null && supplierSearch.getCreateTimeEnd() != null){
@@ -141,6 +141,7 @@ public class SupplierService {
         if(supplierSearch.getComments() != null && supplierSearch.getComments().compareTo("") != 0){
             criteria.andCommentsLike("%" + supplierSearch.getComments() + "%");
         }
+        supplierExample.setOrderByClause("id desc");
         PageHelper.startPage(supplierSearch.getPageNum(),supplierSearch.getPageSize());
         List<Supplier> supplierList = supplierMapper.selectByExample(supplierExample);
         SupplierSearchResult supplierSearchResult = new SupplierSearchResult();

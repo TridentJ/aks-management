@@ -23,6 +23,7 @@ import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -74,13 +75,8 @@ public class SupplierController {
             supplierSampleInfo.setAddress(supplier.getCompanyAddress());
             supplierSampleInfo.setState(supplier.getState());
             supplierSampleInfo.setTelephone(supplier.getTelephone());
-            //supplierSampleInfo.setOderQuantity(0);
-            try {
-                String time = sdf.format(supplier.getCreateTime());
-                supplierSampleInfo.setCreateTime(time);
-            }catch (Exception e){
-                supplierSampleInfo.setCreateTime("-");
-            }
+            supplierSampleInfo.setCreateTime(supplier.getCreateTime());
+            
             supplierSampleInfoList.add(supplierSampleInfo);
             
         });
@@ -209,7 +205,7 @@ public class SupplierController {
             return ajaxResponse;
         }
         supplier.setCreateTime(null);
-        supplier.setUpdateTime(null);
+        supplier.setUpdateTime(LocalDateTime.now());
         int result = supplierService.updateSupplierById(supplier);
         if(result == 1){
             ajaxResponse.setCode(0);
