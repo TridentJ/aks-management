@@ -16,6 +16,7 @@ pagehelper:
   helper-dialect: mariadb
   reasonable: true
   support-methods-arguments: true
+  page-size-zero: true
 
 
 springdoc:

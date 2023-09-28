@@ -94,6 +94,37 @@ public class SupplierController {
         return ajaxResponse;
     }
     
+    @GetMapping(value = "selectList")
+    public AjaxResponseList getSelectList(){
+        AjaxResponseList ajaxResponseList = new AjaxResponseList();
+        List<Supplier> supplierList = supplierService.getSupplierByState(100,1,0);
+        if(supplierList == null || supplierList.isEmpty()){
+            ajaxResponseList.setCode(1130);
+            ajaxResponseList.setMessage("供应商查询结果为空");
+            return ajaxResponseList;
+        }
+        List<SupplierSampleInfo> supplierSampleInfoList = new ArrayList<>();
+        supplierList.forEach( supplier -> {
+            SupplierSampleInfo supplierSampleInfo = new SupplierSampleInfo();
+            supplierSampleInfo.setId(supplier.getId());
+            supplierSampleInfo.setSupplierName(supplier.getSupplierName());
+            supplierSampleInfo.setSupplierNumber(supplier.getSupplierNumber());
+            supplierSampleInfoList.add(supplierSampleInfo);
+        
+        });
+        int totalNum = supplierService.getAllCountByState(100);
+        if(totalNum > 0){
+            ajaxResponseList.setTotal(totalNum);
+        }else{
+            ajaxResponseList.setTotal(0);
+        }
+        ajaxResponseList.setPageSize(0);
+        ajaxResponseList.setPageNum(1);
+        ajaxResponseList.setCode(0);
+        ajaxResponseList.setMessage("成功");
+        ajaxResponseList.setData(supplierSampleInfoList);
+        return ajaxResponseList;
+    }
     
     @Operation(
             summary = "查询单个供应商基础信息",

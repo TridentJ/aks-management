@@ -22,13 +22,12 @@ import com.aks.management.utils.supplier.SupplierContactsShow;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.github.yitter.idgen.YitIdHelper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -215,5 +214,34 @@ public class PurchaseController {
         return ajaxResponse;
     }
     
+    @Operation(
+            summary = "添加采购单",
+            description = "新增一个采购单",
+            parameters = {
+                    @Parameter(name="purchase", description = "采购单信息", required = true),
+            }
+    )
+    @PostMapping(value = "/add")
+    public AjaxResponse addPurchase(@RequestBody Purchase purchase){
+        AjaxResponse ajaxResponse = new AjaxResponse();
+        if( purchase == null){
+            ajaxResponse.setCode(1125);
+            ajaxResponse.setMessage("采购信息不合法");
+            return ajaxResponse;
+        }
+        purchase.setId(YitIdHelper.nextId());
+        purchase.setCreateTime(null);
+        purchase.setUpdateTime(null);
+        int result = purchaseService.addPurchase(purchase);
+        if(result != 1){
+            ajaxResponse.setCode(1126);
+            ajaxResponse.setMessage("采购单添加失败");
+            return ajaxResponse;
+        }
+        ajaxResponse.setCode(0);
+        ajaxResponse.setMessage("成功");
+        ajaxResponse.setData(purchase.getId());
+        return ajaxResponse;
+    }
     
 }
