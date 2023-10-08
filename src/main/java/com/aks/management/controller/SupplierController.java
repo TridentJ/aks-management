@@ -38,8 +38,6 @@ public class SupplierController {
     @Resource
     private SupplierService supplierService;
     
-    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    
     @Operation(
             summary = "供应商基础信息清单",
             description = "基础供应商信息，用于列表展示",
@@ -94,6 +92,10 @@ public class SupplierController {
         return ajaxResponse;
     }
     
+    @Operation(
+            summary = "供应商基础信息清单",
+            description = "基础供应商信息，用于采购单中选择供应商"
+    )
     @GetMapping(value = "selectList")
     public AjaxResponseList getSelectList(){
         AjaxResponseList ajaxResponseList = new AjaxResponseList();

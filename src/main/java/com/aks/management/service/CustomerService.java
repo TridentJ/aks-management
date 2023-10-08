@@ -68,8 +68,6 @@ public class CustomerService {
     }
     
     
-    
-    
     public CustomerSearchResult searchCustomer(CustomerSearch customerSearch) {
         //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         CustomerExample customerExample = new CustomerExample();
