@@ -73,7 +73,7 @@ public class CargoController {
     @GetMapping(value = "selectList")
     public AjaxResponseList getSelectList(){
         AjaxResponseList ajaxResponseList = new AjaxResponseList();
-        List<Cargo> cargoList = cargoService.getCargoByState(100,1,0);
+        List<Cargo> cargoList = cargoService.getCargoByState(1,0,100);
         if(cargoList == null || cargoList.isEmpty()){
             ajaxResponseList.setCode(1310);
             ajaxResponseList.setMessage("查询的货物为空");
@@ -102,6 +102,7 @@ public class CargoController {
         ajaxResponseList.setData(cargoSampleList);
         return ajaxResponseList;
     }
+    
     
     
 }
