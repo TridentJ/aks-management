@@ -22,10 +22,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -226,8 +223,8 @@ public class CustomerContactsController {
                     @Parameter(name="id", description = "客户联系人ID", required = true),
             }
     )
-    @PostMapping(value = "/delete")
-    public AjaxResponse deleteCustomerContactsById(@RequestBody Long id){
+    @GetMapping(value = "/delete")
+    public AjaxResponse deleteCustomerContactsById(Long id){
         AjaxResponse ajaxResponse = new AjaxResponse();
         int result = customerContactsService.changeCustomerContactsStateById(id,0);
         if(result == 1){

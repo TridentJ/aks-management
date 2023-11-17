@@ -20,6 +20,7 @@ public class PurchaseSampleList {
     private String contractDeliverDate;
     private Double priceIncludingTax;
     private Double deposit;
+    private Integer depositFlag;
     private Integer purchaseState;
     
 }

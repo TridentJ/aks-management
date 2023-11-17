@@ -204,6 +204,35 @@ public class PurchaseCargoController {
         return ajaxResponse;
     }
     
+    @Operation(
+            summary = "删除采购单单个货物信息",
+            description = "删除采购单单个货物信息",
+            parameters = {
+                    @Parameter(name="id", description = "待删除的采购单单个货物ID", required = true),
+            }
+    )
+    @GetMapping(value = "/delete")
+    public AjaxResponse deletePurchaseCargoById(Long id){
+        AjaxResponse ajaxResponse = new AjaxResponse();
+        if(id == null || id < 0L){
+            ajaxResponse.setCode(1343);
+            ajaxResponse.setMessage("不存在货物信息");
+            return ajaxResponse;
+        }
+        PurchaseCargo purchaseCargo = new PurchaseCargo();
+        purchaseCargo.setId(id);
+        purchaseCargo.setState(0);
+        int result = purchaseCargoService.updatePurchaseCargoById(purchaseCargo);
+        if( result == 1){
+            ajaxResponse.setCode(0);
+            ajaxResponse.setMessage("成功");
+        }else{
+            ajaxResponse.setCode(1347);
+            ajaxResponse.setMessage("删除货物失败");
+        }
+        return ajaxResponse;
+    }
+    
     
     @Operation(
             summary = "获取单个采购单的所有货物信息",

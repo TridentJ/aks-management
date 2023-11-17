@@ -287,7 +287,7 @@ public class InvoiceBaseController {
                     @Parameter(name="id", description = "发票ID"),
             }
     )
-    @PostMapping(value = "/delete")
+    @GetMapping(value = "/delete")
     public AjaxResponse deleteInvoiceBaseById(Long id){
         AjaxResponse ajaxResponse = new AjaxResponse();
         int result = invoiceBaseService.changeInvoiceBaseStateById(id,0);

@@ -95,6 +95,7 @@ public class PurchaseController {
                 purchaseSampleList.setSupplierName(supplier.getSupplierName());
             }
             purchaseSampleList.setDeposit(purchase.getDeposit());
+            purchaseSampleList.setDepositFlag(purchase.getDepositFlag());
             purchaseSampleList.setPriceIncludingTax(purchase.getPriceIncludingTax());
             try {
                 //LocalDateTime signTime = LocalDateTime.parse(purchase.getSignTime(),DATE_FORMATTER);
@@ -107,6 +108,7 @@ public class PurchaseController {
             }catch (Exception e){
                 purchaseSampleList.setContractDeliverDate("-");
             }
+            purchaseSampleList.setPurchaseState(purchase.getPurchaseState());
             purchaseSampleListList.add(purchaseSampleList);
         }
         int totalNum = purchaseService.getAllCountByState(100);
@@ -243,5 +245,40 @@ public class PurchaseController {
         ajaxResponse.setData(purchase.getId());
         return ajaxResponse;
     }
+    
+    
+    @Operation(
+            summary = "更新采购单",
+            description = "更新一个采购单",
+            parameters = {
+                    @Parameter(name="purchase", description = "采购单信息", required = true),
+            }
+    )
+    @PostMapping(value = "/update")
+    public AjaxResponse updatePurchase(@RequestBody Purchase purchase){
+        AjaxResponse ajaxResponse = new AjaxResponse();
+        if( purchase == null){
+            ajaxResponse.setCode(1125);
+            ajaxResponse.setMessage("采购信息不合法");
+            return ajaxResponse;
+        }
+        if(purchase.getId() == null || purchase.getId() < 1L){
+            ajaxResponse.setCode(1123);
+            ajaxResponse.setMessage("采购单ID不合法");
+            return ajaxResponse;
+        }
+        purchase.setCreateTime(null);
+        purchase.setUpdateTime(null);
+        int result = purchaseService.updatePurchase(purchase);
+        if(result == 1){
+            ajaxResponse.setCode(0);
+            ajaxResponse.setMessage("成功");
+        }else{
+            ajaxResponse.setCode(1127);
+            ajaxResponse.setMessage("更新采购单失败");
+        }
+        return ajaxResponse;
+    }
+    
     
 }
